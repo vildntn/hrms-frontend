@@ -23,7 +23,6 @@ export default function JobAdvertisement() {
             <Table.HeaderCell>Deadline</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
-
         <Table.Body>
           {
             //productsları map et şu jsx üret
@@ -40,17 +39,13 @@ export default function JobAdvertisement() {
             ))
           }
         </Table.Body>
-
         <Table.Footer>
           <Table.Row>
             <Table.HeaderCell colSpan="3">
-              
               <Menu floated="right" pagination>
                 <Menu.Item as="a" icon>
-
                   <Icon name="chevron left" />
                 </Menu.Item>
-
                 <Menu.Item as="a">1</Menu.Item>
                 <Menu.Item as="a">2</Menu.Item>
                 <Menu.Item as="a">3</Menu.Item>

@@ -18,8 +18,7 @@ return (
           <Table.HeaderCell>Email </Table.HeaderCell>
           <Table.HeaderCell>BirthDate</Table.HeaderCell>
         </Table.Row>
-      </Table.Header>
-     
+      </Table.Header>    
       <Table.Body>
         {
           //productsları map et şu jsx üret
@@ -33,7 +32,6 @@ return (
           ))
         }
       </Table.Body>
-
       <Table.Footer>
         <Table.Row>
           <Table.HeaderCell colSpan="3">

@@ -18,8 +18,7 @@ export default function StaffList() {
           <Table.HeaderCell>Last Name</Table.HeaderCell>
           <Table.HeaderCell>Email </Table.HeaderCell>
          </Table.Row>
-       </Table.Header>
-      
+       </Table.Header>     
        <Table.Body>
          {
            //productsları map et şu jsx üret
@@ -32,7 +31,6 @@ export default function StaffList() {
            ))
          }
        </Table.Body>
-
        <Table.Footer>
          <Table.Row>
            <Table.HeaderCell colSpan="3">

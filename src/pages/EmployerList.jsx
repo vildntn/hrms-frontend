@@ -19,7 +19,6 @@ export default function EmployerList() {
             <Table.HeaderCell>Email</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
-       
         <Table.Body>
           {
             //productsları map et şu jsx üret
@@ -33,7 +32,6 @@ export default function EmployerList() {
             ))
           }
         </Table.Body>
-
         <Table.Footer>
           <Table.Row>
             <Table.HeaderCell colSpan="3">
