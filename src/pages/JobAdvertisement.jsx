@@ -44,10 +44,13 @@ export default function JobAdvertisement() {
         <Table.Footer>
           <Table.Row>
             <Table.HeaderCell colSpan="3">
+              
               <Menu floated="right" pagination>
                 <Menu.Item as="a" icon>
+
                   <Icon name="chevron left" />
                 </Menu.Item>
+
                 <Menu.Item as="a">1</Menu.Item>
                 <Menu.Item as="a">2</Menu.Item>
                 <Menu.Item as="a">3</Menu.Item>
