@@ -1,13 +1,14 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { Icon, Label, Menu, Table } from "semantic-ui-react";
-import JobAdvertisementService from '../services/jobAdvertisementService'
+import JobAdvertisementService from "../services/jobAdvertisementService";
 export default function JobAdvertisement() {
-
   const [jobAdvertisements, setJobAdvertisements] = useState([]);
-   useEffect(()=>{
-      let jobAdvertisementService= new JobAdvertisementService()
-      jobAdvertisementService.getAllJobAdvertisements().then(result=>setJobAdvertisements(result.data.data))
-   })
+  useEffect(() => {
+    let jobAdvertisementService = new JobAdvertisementService();
+    jobAdvertisementService
+      .getAllJobAdvertisements()
+      .then((result) => setJobAdvertisements(result.data.data));
+  });
   return (
     <div>
       <Table celled>
@@ -22,7 +23,7 @@ export default function JobAdvertisement() {
             <Table.HeaderCell>Deadline</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
-       
+
         <Table.Body>
           {
             //productsları map et şu jsx üret
