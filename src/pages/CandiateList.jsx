@@ -7,7 +7,7 @@ export default function CandiateList() {
   useEffect(()=>{
     let candidateService= new CandidateService()
     candidateService.getAllcandidates().then(result=>setCandidates(result.data.data))
- })
+ },[])
 return (
   <div>
     <Table celled>

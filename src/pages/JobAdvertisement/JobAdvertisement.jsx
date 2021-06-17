@@ -1,17 +1,78 @@
 import React, { useState, useEffect } from "react";
-import { Icon, Label, Menu, Table } from "semantic-ui-react";
-import JobAdvertisementService from "../services/jobAdvertisementService";
+import {
+  Icon,
+  Label,
+  Menu,
+  Table,
+  Card,
+  Image,
+  Button,
+} from "semantic-ui-react";
+import JobAdvertisementService from "../../services/jobAdvertisementService";
+
+
+
 export default function JobAdvertisement() {
   const [jobAdvertisements, setJobAdvertisements] = useState([]);
+
+  
   useEffect(() => {
     let jobAdvertisementService = new JobAdvertisementService();
     jobAdvertisementService
       .getAllJobAdvertisements()
       .then((result) => setJobAdvertisements(result.data.data));
-  });
+    console.log(jobAdvertisements);
+  }, []);
   return (
     <div>
-      <Table celled>
+      <Card.Group>
+       
+          {jobAdvertisements.map((jobAdvertisement) => (
+        
+            <Card fluid key={jobAdvertisement.id}>
+              <Card.Content>
+                <Image
+                  floated="left"
+                  size="tiny"
+                  src="https://react.semantic-ui.com/images/avatar/large/jenny.jpg"
+                />
+                <Card.Header>
+                  {jobAdvertisement?.jobTitle}
+                </Card.Header>
+                <Card.Meta>{jobAdvertisement?.companyName} </Card.Meta>
+                <Card.Meta><span> {jobAdvertisement.cityName}</span></Card.Meta>
+                <Card.Description>
+                  {jobAdvertisement.Description}
+                </Card.Description>
+              </Card.Content>
+              <Card.Content extra>
+                <div className="ui two buttons">
+                  <Button basic color="green">
+                    Approve
+                  </Button>
+                  <Button basic color="red">
+                    Decline
+                  </Button>
+                </div>
+              </Card.Content>
+            </Card>
+         
+          ))}
+      
+      </Card.Group>
+      
+      {/* <div className="list-items">
+        <div className="ad-card-content">
+          <div className="ad-card-row">
+            <div className="row-k-ad-card">
+              <div className="row-k">
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> */}
+      {/* <Table celled>
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell>Job Title</Table.HeaderCell>
@@ -57,7 +118,7 @@ export default function JobAdvertisement() {
             </Table.HeaderCell>
           </Table.Row>
         </Table.Footer>
-      </Table>
+      </Table> */}
     </div>
   );
 }

@@ -7,7 +7,8 @@ export default function EmployerList() {
    useEffect(()=>{
       let employerService= new EmployerService()
       employerService.getAllEmployers().then(result=>setEmployers(result.data.data))
-   })
+      //console.log(employers.companyName)
+   },[])
   return (
     <div>
       <Table celled>

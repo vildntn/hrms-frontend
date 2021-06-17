@@ -8,7 +8,7 @@ export default function StaffList() {
   useEffect(()=>{
      let staffService= new StaffService()
      staffService.getAllStaffs().then(result=>setStaffs(result.data.data))
-  })
+  },[])
  return (
    <div>
      <Table celled>
