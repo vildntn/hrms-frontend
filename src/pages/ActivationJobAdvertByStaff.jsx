@@ -15,6 +15,14 @@ export default function ActivationJobAdvertByStaff() {
         .then((result) => setJobAdvertisements(result.data.data));
       console.log(jobAdvertisements);
     }, []);
+
+    let changeActiveJobAdvertByStaff = (id) => {
+      let jobAdvertisementService = new JobAdvertisementService();
+      jobAdvertisementService
+        .changeActiveJobAdvertByStaff(id)
+        .then((result) => {
+          console.log(result.data.message)})
+  }
     return (
       <div>
         <div className="list-items">
@@ -40,6 +48,7 @@ export default function ActivationJobAdvertByStaff() {
               <Table.HeaderCell>Deadline</Table.HeaderCell>
               <Table.HeaderCell>Work Type</Table.HeaderCell>
               <Table.HeaderCell>Job Type</Table.HeaderCell>
+              <Table.HeaderCell></Table.HeaderCell>
             </Table.Row>
           </Table.Header>
           <Table.Body>
@@ -56,7 +65,7 @@ export default function ActivationJobAdvertByStaff() {
                   <Table.Cell>{jobAdvertisements.applicationDeadline}</Table.Cell>
                   <Table.Cell>{jobAdvertisements.workType}</Table.Cell>
                   <Table.Cell>{jobAdvertisements.jobType}</Table.Cell>
-                  <Button>Something</Button>
+                  <Button  color='brown'>Confirm</Button>
                 </Table.Row>
               ))
             }
