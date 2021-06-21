@@ -1,5 +1,5 @@
 import React ,{useState}from "react";
-import { Button, Dropdown,Container,  component, Menu } from "semantic-ui-react";
+import {  Dropdown,Container, Menu } from "semantic-ui-react";
 import SignedIn from "./SignedIn";
 import SignedOut from "./SignedOut";
 import { Link } from "react-router-dom";

@@ -1,8 +1,8 @@
 import React, { useState, useEffect} from "react";
-import { Icon, Label, Menu, Table } from "semantic-ui-react";
-import CandidateService from '../services/candidateService'
+import { Icon, Menu, Table } from "semantic-ui-react";
+import CandidateService from '../../services/candidateService'
 
-export default function CandiateList() {
+export default function CandidateList() {
   const [candidates, setCandidates] = useState([]);
   useEffect(()=>{
     let candidateService= new CandidateService()

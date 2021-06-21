@@ -1,9 +1,6 @@
 import React from "react";
 import { Grid } from "semantic-ui-react";
-import CandiateList from "../pages/CandiateList";
-import EmployerList from "../pages/EmployerList";
 import JobAdvertisement from "../pages/JobAdvertisement/JobAdvertisement";
-import StaffList from "../pages/StaffList";
 export default function Content() {
   return (
     <div>
@@ -24,6 +21,7 @@ export default function Content() {
           </Grid.Column>
         </Grid.Row> */}
       </Grid>
+      
     </div>
   );
 }
