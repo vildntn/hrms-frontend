@@ -17,6 +17,7 @@ export default function JobAdvertisement() {
       .then((result) => setJobAdvertisements(result.data.data));
     console.log(jobAdvertisements);
   }, []);
+
   return (
     <div>
       <div className="list-items">
@@ -24,7 +25,6 @@ export default function JobAdvertisement() {
           <div className="ad-card-row">
             <div className="row-k-ad-card">
               <div className="row-k">
-
               </div>
             </div>
           </div>
@@ -44,7 +44,6 @@ export default function JobAdvertisement() {
         </Table.Header>
         <Table.Body>
           {
-            //productsları map et şu jsx üret
             jobAdvertisements.map((jobAdvertisements) => (
               <Table.Row key={jobAdvertisements.id}>
                 <Table.Cell>{jobAdvertisements.jobTitle}</Table.Cell>

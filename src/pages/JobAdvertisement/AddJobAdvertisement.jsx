@@ -120,6 +120,7 @@ export default function JobAdvertisementForm() {
       });
     },
   });
+
   return (
     <div>
       <Segment>
@@ -145,7 +146,6 @@ export default function JobAdvertisementForm() {
               <div style={{ color: "red" }}>{formik.errors.jobPositionId}</div>
             )}
           </Form.Field>
-
           <Form.Field>
             <label>City</label>
             <Dropdown

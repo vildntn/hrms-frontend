@@ -53,7 +53,7 @@ export default function ActivationJobAdvertByStaff() {
           </Table.Header>
           <Table.Body>
             {
-              //productsları map et şu jsx üret
+
               jobAdvertisements.map((jobAdvertisements) => (
                 <Table.Row key={jobAdvertisements.id}>
                   <Table.Cell>{jobAdvertisements.jobTitle}</Table.Cell>
@@ -65,7 +65,7 @@ export default function ActivationJobAdvertByStaff() {
                   <Table.Cell>{jobAdvertisements.applicationDeadline}</Table.Cell>
                   <Table.Cell>{jobAdvertisements.workType}</Table.Cell>
                   <Table.Cell>{jobAdvertisements.jobType}</Table.Cell>
-                  <Button  color='brown'>Confirm</Button>
+                  <Button  color='brown' onClick={()=>changeActiveJobAdvertByStaff(jobAdvertisements.id)}>Confirm</Button>
                 </Table.Row>
               ))
             }
