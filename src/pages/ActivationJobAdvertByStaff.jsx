@@ -7,7 +7,6 @@ export default function ActivationJobAdvertByStaff() {
        
     const [jobAdvertisements, setJobAdvertisements] = useState([]);
   
-    
     useEffect(() => {
       let jobAdvertisementService = new JobAdvertisementService();
       jobAdvertisementService

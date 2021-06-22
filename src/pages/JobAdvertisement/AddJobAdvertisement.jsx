@@ -120,7 +120,6 @@ export default function JobAdvertisementForm() {
       });
     },
   });
-
   return (
     <div>
       <Segment>
@@ -130,7 +129,6 @@ export default function JobAdvertisementForm() {
           </div>
           <Form.Field>
             <label>Job Position</label>
-
             <Dropdown
               placeholder="Job Position"
               fluid
