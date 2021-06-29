@@ -10,9 +10,8 @@ export default function HomePage() {
       <Grid style={{marginTop:50}}>
         <Grid.Row>
           <Grid.Column width={16}>
-
                 <ToolBar />
-     
+    
           </Grid.Column>
         </Grid.Row>
  
