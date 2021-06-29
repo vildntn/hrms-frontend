@@ -10,3 +10,11 @@
 .form-input-min-max{
   margin-left: 30px;
 }
+.ui.custom.control.label{
+  padding-right: 90px;
+  background-color: white;
+  
+}
+.ui.custom.control.input{
+ padding-top: 15px;
+}
