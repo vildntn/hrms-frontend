@@ -6,19 +6,20 @@ import JobAdvertisementService from "../services/jobAdvertisementService";
 export default function ActivationJobAdvertByStaff() {
        
     const [jobAdvertisements, setJobAdvertisements] = useState([]);
+    const [staffs, setStaffs] = useState([])
+    let jobAdvertisementService = new JobAdvertisementService();
   
     useEffect(() => {
-      let jobAdvertisementService = new JobAdvertisementService();
+    
       jobAdvertisementService
         .getAllJobAdvertisements()
         .then((result) => setJobAdvertisements(result.data.data));
       console.log(jobAdvertisements);
     }, []);
 
-    let changeActiveJobAdvertByStaff = (id) => {
-      let jobAdvertisementService = new JobAdvertisementService();
+    function isJobAdvertConfirmed(jobAdvertId,staffId)  {
       jobAdvertisementService
-        .changeActiveJobAdvertByStaff(id)
+        .isJobAdvertConfirmed(jobAdvertId,staffId)
         .then((result) => {
           console.log(result.data.message)})
   }
@@ -64,7 +65,7 @@ export default function ActivationJobAdvertByStaff() {
                   <Table.Cell>{jobAdvertisements.applicationDeadline}</Table.Cell>
                   <Table.Cell>{jobAdvertisements.workType}</Table.Cell>
                   <Table.Cell>{jobAdvertisements.jobType}</Table.Cell>
-                  <Button  color='brown' onClick={()=>changeActiveJobAdvertByStaff(jobAdvertisements.id)}>Confirm</Button>
+                  <Button  color='brown' onClick={()=>isJobAdvertConfirmed(jobAdvertisements.id,13)}>Confirm</Button>
                 </Table.Row>
               ))
             }

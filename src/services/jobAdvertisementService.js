@@ -9,7 +9,10 @@ export default class JobAdvertisementService{
     return axios.post("http://localhost:8080/api/jobAdvertisements/add", jobAdvertisement)
 }
 
-changeActiveJobAdvertByStaff(id){
-    return axios.post("http://localhost:8080/api/jobAdvertisements/changeActiveJobAdvertByStaff?id=" + id)
+changeActiveJobAdvertByStaff(jobAdvertId,staffId){
+    return axios.post("http://localhost:8080/api/jobAdvertActivationByStaff/approvalJobAdvertByStaff?jobAdvertId="+jobAdvertId+"&staffId="+staffId)
 }
+
+
+
 }
