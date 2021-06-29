@@ -6,7 +6,7 @@ import CandidateList from '../pages/JobSeeker/JobSeekerList';
 import EmployerList from '../pages/Employer/EmployerList';
 import StaffList from '../pages/Staff/StaffList';
 import ActivationJobAdvertByStaff from '../pages/ActivationJobAdvertByStaff';
-import SignUp from '../pages/SignUp';
+import SignUp from '../pages/SignUp/SignUp';
 import HomePage from '../pages/HomePage/HomePage';
 
 
