@@ -1,77 +1,108 @@
 import React, { useState, useEffect } from "react";
-import { Card, Image, Button, Container, Header, Icon } from "semantic-ui-react";
+import { Icon } from "semantic-ui-react";
+import SideBar from "../../layouts/SideBar/SideBar";
 import JobAdvertisementService from "../../services/jobAdvertisementService";
+import logo from "../../assets/ps-jpg.png";
 
 export default function JobAdvertisement() {
+
   const [jobAdvertisements, setJobAdvertisements] = useState([]);
+  // const [favJobAdverts, setFavJobAdvert] = useState([]);
+  //   const favJobAdvert={
+  //     jobAdvertId:"",
+  //     jobSeekerId:1,
+  //     status:true
+  //   }
+
+
+  let jobAdvertisementService = new JobAdvertisementService();
 
   useEffect(() => {
-    let jobAdvertisementService = new JobAdvertisementService();
     jobAdvertisementService
       .getAllJobAdvertisements()
       .then((result) => setJobAdvertisements(result.data.data));
     console.log(jobAdvertisements);
   }, []);
-  return (
-    <div>
-      <Card.Group>
-        {jobAdvertisements.map((jobAdvertisement) => (
-          <Card fluid key={jobAdvertisement.id}>
-            <Card.Content>
-              <div className="column">
-                <Image
-                  floated="left"
-                  size="tiny"
-                  src="https://react.semantic-ui.com/images/avatar/large/jenny.jpg"
-                />
-              </div>
-              <div className="column">
-                <Container textAlign="left">
-                  <div>
-                    <Header as="h3">{jobAdvertisement?.jobTitle}</Header>
-                  </div>
-                  <div>
-                    <label>{jobAdvertisement?.companyName}</label>
-                  </div>
-                  <Card.Meta>
-                    <p> {jobAdvertisement.cityName}</p>
-                  </Card.Meta>
-                  <Card.Description>
-                    {jobAdvertisement.Description}
-                  </Card.Description>
 
-               
-                </Container>
-                <div className="column">
-                <Container textAlign="right">
-                    <Button inverted color='orange' icon>  <Icon name='heart outline' /> <span></span>Save</Button>
-                  </Container>
-                </div>
-              </div>
-          
-                <div className="equal width fields">
-                  <div className="field">
-                  <label>{jobAdvertisement?.jobType}</label>
+  // function saveJobAdvert(id) {
+  //   let favJobAdvert = {
+  //     jobAdvertisement: { id: id },
+  //     jobSeeker: { id: 1 },
+  //     status: true,
+  //   };
+  //   jobAdvertisementService
+  //     .addFavoriteJobAdvert(favJobAdvert)
+  //     .then((result) => console.log(result.data.message))
+  //     .catch((err) => alert(err));
+
+  //   console.log(favJobAdverts);
+  // }
+
+  return (
+    <>
+      <div className="ui centered grid" style={{ marginTop: "5em" }}>
+        <div className="row">
+          <div className="three wide column">
+            <SideBar />
+          </div>
+
+          <div className="eight wide column" >
+            <h2>Job Listing</h2>
+            <br />
+             {
+               jobAdvertisements.map((jobAdvert)=>{
+                 console.log(jobAdvert)
+                    const{id,jobTitle,jobType,workType,applicationDeadline,companyName
+                    ,department,cityName}=jobAdvert
+                return(
+                  <div className="ui cards card--shadow" key={id}>
+                  <div className="ui fluid card">
+                    <div className="content">
+                      <img src={logo} className="ui mini right floated image" />
+                      <div className="ui centered grid job-list-favourite-time right floated " style={{marginRight:'2em'}}>
+                        <div className="row" >
+                          <a className="job-list-favourite order-2 icon-heart " href="#">
+                            <Icon name="heart outline" ></Icon>
+                          </a>
+                        </div>
+                        <div className="row" style={{paddingTop:'0'}}>
+                          <span className="job-list-time order-1">
+                            <Icon name="clock outline"></Icon>3H ago
+                          </span>
+                        </div>
+                      </div>
+                      <div class="header">
+                        {jobTitle}
+                        <span className="ml-1em work--type"> {jobType}</span>
+                      </div>
+                      <div class="meta">
+                        {" "}
+                        <ul className="list-unstyled">
+                          <li>
+                            <span style={{ marginRight: 3 }}>via</span>
+                            <a href="employer-detail.html">{companyName}</a>
+                          </li>
+                          <li>
+                            <Icon name="map marker alternate"></Icon>
+                            {/* <i aria-hidden="true" className="orange map marker alternate"></i>  Parsippany, NJ 07054*/}
+                           {cityName}
+                          </li>
+                          <li>
+                            <Icon name="filter"></Icon>
+                            {department}
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
                   </div>
-              <div className="field">
-              <span>{jobAdvertisement?.workType}</span>
-              </div>
                 </div>
-            
-            </Card.Content>
-            {/* <Card.Content extra>
-                <div className="ui two buttons">
-                  <Button basic color="green">
-                    Approve
-                  </Button>
-                  <Button basic color="red">
-                    Decline
-                  </Button>
-                </div>
-              </Card.Content> */}
-          </Card>
-        ))}
-      </Card.Group>
-    </div>
+                )
+               })
+             }
+
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
