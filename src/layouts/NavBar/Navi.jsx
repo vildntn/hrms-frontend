@@ -1,6 +1,6 @@
 import "./Navi.css";
 import React, { useState } from "react";
-import { Dropdown, Container, Menu, Input } from "semantic-ui-react";
+import { Dropdown, Container, Menu } from "semantic-ui-react";
 import SignedIn from "../SignedIn";
 import SignedOut from "../SignedOut";
 import { Link } from "react-router-dom";
@@ -16,55 +16,35 @@ export default function Navi() {
 
   return (
     <div>
-      <div >
-      <Menu className="ui navbar bg color" fixed="top">
-        <Container>
-          <Menu.Item className="ui orange header" as={Link} to="/" name="HRMS" />
-          <Menu.Item  className="ui white text color" name="messages" />
-          <Menu.Item  className="ui white text color" name="Search Job" />
+      <Menu className="ui large secondary menu" fixed="top">
+        <div className="ui container">
+          <Menu.Item as={Link} to="/" name="techorse" />
+
           <Menu.Menu position="right">
-            <Menu.Item  className="ui white text color" as={Link} to="/jobAdvertisements">
+            <Menu.Item name="messages" />
+            <Menu.Item name="Search Job" as={Link} to="searchJob" />
+            <Menu.Item name="Resume" />
+            <Menu.Item as={Link} to="/jobAdvertisements">
               Post A Job
             </Menu.Item>
-            <Dropdown  className="ui white text color" item text="Language">
+            <Dropdown item text="Language">
               <Dropdown.Menu>
                 <Dropdown.Item>English</Dropdown.Item>
                 <Dropdown.Item>Russian</Dropdown.Item>
                 <Dropdown.Item>Spanish</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
-            
-            <Menu className="ui navbar bg color " >
+
+            <Menu.Item>
               {isAuthenticated ? (
                 <SignedIn signOut={handleSignOut} />
               ) : (
                 <SignedOut signIn={handleSignIn} />
               )}
-            </Menu>
-     
-        
+            </Menu.Item>
           </Menu.Menu>
-        </Container>
-      
+        </div>
       </Menu>
-      </div>
-     
-    {/* <div>
-    <Menu style={{marginTop:74}} fixed>
-    <Menu.Item>
-      <Input className='icon' icon='search' placeholder='Search...' />
-    </Menu.Item>
-
-    <Menu.Item position='right'>
-      <Input
-        action={{ type: 'submit', content: 'Go' }}
-        placeholder='Navigate to...'
-      />
-    </Menu.Item>
-  </Menu>
-    </div>
-      */}
-   
     </div>
   );
 }
