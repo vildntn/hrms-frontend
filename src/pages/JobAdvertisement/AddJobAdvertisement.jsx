@@ -1,293 +1,314 @@
 import { useFormik } from "formik";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
-  Form,
-  Segment,
-  Header,
-  Dropdown,
   Button,
   Input,
+  Dropdown,
+  Form,
+  TextArea,
+  Label,
 } from "semantic-ui-react";
-import * as Yup from "yup";
 import CityService from "../../services/cityService";
 import JobPositionService from "../../services/jobPositionService";
-import EmployerService from "../../services/employerService";
 import WorkTypeService from "../../services/workTypeService";
 import JobTypeService from "../../services/jobTypeService";
 import JobAdvertisementService from "../../services/jobAdvertisementService";
-export default function JobAdvertisementForm() {
-  const [cities, setCity] = useState([]);
+import * as Yup from "yup";
+import { toast } from "react-toastify";
+
+export default function JobAdvertisementAdd() {
+  const [cities, setCities] = useState([]);
   const [jobPositions, setJobPositions] = useState([]);
-  const [employers, setEmployers] = useState([]);
   const [workTypes, setWorkTypes] = useState([]);
   const [jobTypes, setJobTypes] = useState([]);
+  let jobAdvertisementService = new JobAdvertisementService();
 
   useEffect(() => {
     let cityService = new CityService();
-    cityService.getAll().then((results) => setCity(results.data.data));
     let jobPositionService = new JobPositionService();
+    let jobTypeService = new JobTypeService();
+    let workTypeService = new WorkTypeService();
+    cityService.getAll().then((result) => setCities(result.data.data));
     jobPositionService
       .getAllJobPositions()
-      .then((jobPosResult) => setJobPositions(jobPosResult.data.data));
-
-    let employerService = new EmployerService();
-    employerService
-      .getAllEmployers()
-      .then((employerResult) => setEmployers(employerResult.data.data));
-
-    let workTypeService = new WorkTypeService();
-    workTypeService
-      .getAll()
-      .then((workTypeResult) => setWorkTypes(workTypeResult.data.data));
-
-    let jobTypeService = new JobTypeService();
-    jobTypeService
-      .getAll()
-      .then((jobTypeResult) => setJobTypes(jobTypeResult.data.data));
+      .then((result) => setJobPositions(result.data.data));
+    jobTypeService.getAll().then((result) => setJobTypes(result.data.data));
+    workTypeService.getAll().then((result) => setWorkTypes(result.data.data));
   }, []);
 
-  const jobPositionSelection = jobPositions.map((jobPosition, index) => ({
+  const getCities = cities.map((city, index) => ({
     key: index,
-    text: jobPosition.jobTitle,
-    value: jobPosition.id,
+    text: city.city,
+    value: city.id,
   }));
-
-  const jobTypeSelection = jobTypes.map((jobType, index) => ({
+  const getJobPositions = jobPositions.map((position, index) => ({
+    key: index,
+    text: position.jobTitle,
+    value: position.id,
+  }));
+  const getJobTypes = jobTypes.map((jobType, index) => ({
     key: index,
     text: jobType.jobType,
     value: jobType.id,
   }));
-
-  const workTypeSelection = workTypes.map((workType, index) => ({
+  const getWorkTypes = workTypes.map((workType, index) => ({
     key: index,
     text: workType.workType,
     value: workType.id,
   }));
 
-  const citySelection = cities.map((city, index) => ({
-    key: index,
-    text: city.city,
-    value: city.id,
-  }));
-
-  //auth gelene kadar
-  const EmployerSelection = employers.map((employer, index) => ({
-    key: index,
-    text: employer.companyName,
-    value: employer.id,
-  }));
-
   const formik = useFormik({
     initialValues: {
-      jobPositionId: "",
-      employerId: "",
+      positionId: "",
       cityId: "",
-      jobDescription: "",
-      openPosition: "",
-      maxSalary: "",
       minSalary: "",
-      applicadionDeadline: "",
+      maxSalary: "",
+      openPosition: "",
+      jobDescription: "",
+      applicationDeadline: "",
       workTypeId: "",
       jobTypeId: "",
+      employerId: 41,
     },
     validationSchema: Yup.object({
-      jobPositionId: Yup.number().required("Required"),
-      employerId: Yup.number().required("Required"),
-      cityId: Yup.number().required("Required"),
-      workTypeId: Yup.number().required("Required"),
-      jobTypeId: Yup.number().required("Required"),
-      jobDescription: Yup.string().required("Required"),
-      maxSalary: Yup.number().required("Required"),
-      minSalary: Yup.number().required("Required"),
-      openPosition: Yup.number().required("Required"),
-      applicadionDeadline: Yup.date().required("Required"),
+      positionId: Yup.number().required("İş pozisyonu bilgisi seçiniz!"),
+      cityId: Yup.string().required("Şehir bilgisi seçiniz!"),
+      openPosition: Yup.number().required(
+        "Alınacak eleman sayısı boş bırakılamaz!"
+      ),
+      jobDescription: Yup.string().required("Açıklama boş bırakılamaz!"),
+      applicationDeadline: Yup.string().required(
+        "Son başvuru tarihi boş bırakılamaz!"
+      ),
+      workTypeId: Yup.string().required("Çalışma tipi bilgisi seçiniz!"),
+      jobTypeId: Yup.string().required("Çalışma zamanı tipi bilgisi seçiniz!"),
     }),
     onSubmit: (values) => {
+      console.log(values);
       let jobAdvertisement = {
-        jobDescription: values.jobDescription,
-        jobPositionId: values.jobPositionId,
+        //sol taraftakiler swagger'da jobAdvertisement eklerken gelen değişkenler, sağ taraftakiler ise initialValues kısmında belirlediklerimiz
+        applicationDeadline: values.applicationDeadline,
+        city: { id: values.cityId },
+        employer: { id: values.employerId },
+        jobPosition: { id: values.positionId },
         minSalary: values.minSalary,
         maxSalary: values.maxSalary,
         openPosition: values.openPosition,
-        applicadionDeadline: values.applicadionDeadline,
-        employerId: values.employerId,
-        jobTypeId: values.jobTypeId,
-        workTypeId: values.workTypeId,
-        cityId: values.cityId,
+        jobDescription: values.jobDescription,
+        workType: { id: values.workTypeId },
+        jobType: { id: values.jobTypeId },
       };
-      JobAdvertisementService.addJobAdvert(jobAdvertisement).then((result) => {
-        console.log(result.data);
-      });
+      console.log(jobAdvertisement);
+      jobAdvertisementService.addJobAdvert(jobAdvertisement).then((result) =>
+        result.data.success
+          ? toast.success(`İş İlanı Eklendi.`) && formik.resetForm() //formu sıfırlamak için
+          : toast.error("İş İlanı Eklenemedi!")
+      );
     },
   });
+
   return (
-    <div>
-      <Segment>
-        <form onSubmit={formik.handleSubmit}>
-          <div>
-            <Header>Job Advertisement</Header>
-          </div>
-          <Form.Field>
-            <label>Job Position</label>
-            <Dropdown
-              placeholder="Job Position"
-              fluid
-              selection
-              id="jobPositionId"
-              onChange={(fieldName, value) =>
-                formik.setFieldValue("jobPositionId", value.value)
-              }
-              value={formik.values.jobPositionId}
-              options={jobPositionSelection}
-            ></Dropdown>
-            {formik.errors.jobPositionId && formik.touched.jobPositionId && (
-              <div style={{ color: "red" }}>{formik.errors.jobPositionId}</div>
-            )}
-          </Form.Field>
-          <Form.Field>
-            <label>City</label>
-            <Dropdown
-              placeholder="City"
-              fluid
-              selection
-              id="cityId"
-              onChange={(fieldName, value) =>
-                formik.setFieldValue("cityId", value.value)
-              }
-              value={formik.values.cityId}
-              options={citySelection}
-            ></Dropdown>
-            {formik.errors.cityId && formik.touched.cityId && (
-              <div style={{ color: "red" }}>{formik.errors.cityId}</div>
-            )}
-          </Form.Field>
-
-          <Form.Field>
-            <label>Employer</label>
-
-            <Dropdown
-              placeholder="Employer"
-              fluid
-              selection
-              id="employerId"
-              onChange={(fieldName, value) =>
-                formik.setFieldValue("employerId", value.value)
-              }
-              value={formik.values.employerId}
-              options={EmployerSelection}
-            ></Dropdown>
-            {formik.errors.employerId && formik.touched.employerId && (
-              <div style={{ color: "red" }}>{formik.errors.employerId}</div>
-            )}
-          </Form.Field>
-          <Form.Field>
-            <label>Work Type</label>
-            <Dropdown
-              placeholder="Work Type"
-              fluid
-              selection
-              id="workTypeId"
-              onChange={(fieldName, value) =>
-                formik.setFieldValue("workTypeId", value.value)
-              }
-              value={formik.values.workTypeId}
-              options={workTypeSelection}
-            ></Dropdown>
-            {formik.errors.workTypeId && formik.touched.workTypeId && (
-              <div style={{ color: "red" }}>{formik.errors.workTypeId}</div>
-            )}
-          </Form.Field>
-          <Form.Field>
-            <label>Job Type</label>
-            <Dropdown 
-              placeholder="Job Type"
-              fluid
-              selection
-              id="jobTypeId"
-              onChange={(fieldName, value) =>
-                formik.setFieldValue("jobTypeId", value.value)
-              }
-              value={formik.values.jobTypeId}
-              options={jobTypeSelection}
-            ></Dropdown>
-            {formik.errors.jobTypeId && formik.touched.jobTypeId && (
-              <div style={{ color: "red" }}>{formik.errors.jobTypeId}</div>
-            )}
-          </Form.Field>
-          <Form.Group className="form-field-min-max">
-            <Input
-              placeholder="Max Salary"
-              label="Max Salary"
-              type="number"
-              id="maxSalary"
-              onChange={formik.handleChange}
-              value={formik.values.maxSalary}
-            />
-            {formik.errors.maxSalary && formik.touched.maxSalary && (
-              <div style={{ color: "red" }}>{formik.errors.maxSalary}</div>
-            )}
-
-            <Input
-              className="form-input-min-max"
-              placeholder="Min Salary"
-              label="Min Salary"
-              type="number"
-              id="minSalary"
-              onChange={formik.handleChange}
-              value={formik.values.minSalary}
-            />
-            {formik.errors.minSalary && formik.touched.minSalary && (
-              <div style={{ color: "red" }}>{formik.errors.minSalary}</div>
-            )}
-          </Form.Group>
-          <Form.Group className="form-field-min-max">
-            <Input
-              placeholder="Open Position"
-              type="number"
-              id="openPosition"
-              label="Open Position"
-              onChange={formik.handleChange}
-              value={formik.values.openPosition}
-            />
-            {formik.errors.openPosition && formik.touched.openPosition && (
-              <div style={{ color: "red" }}>{formik.errors.openPosition}</div>
-            )}
-
-            <Input
-              placeholder="Application Deadline"
-              type="date"
-              id="applicationDeadline"
-              className="form-input-min-max"
-              label="Application Deadline"
-              onChange={formik.handleChange}
-              value={formik.values.applicationDeadline}
-            />
-            {formik.errors.applicationDeadline &&
-              formik.touched.applicationDeadline && (
-                <div style={{ color: "red" }}>
-                  {formik.errors.applicationDeadline}
+    <>
+      <div style={{ padding: "8em 0em" }} class="ui vertical segment">
+        <div className="ui container stackable middle aligned grid">
+          <div className="ui text container">
+            <div className="ui raised segment bg-gradient">
+              <Form onSubmit={formik.handleSubmit}>
+                <h3>Post New Job</h3>
+                <div
+                  style={{
+                    textAlign: "left",
+                    fontFamily: "Arial",
+                    fontWeight: "bold",
+                    padding: "1em",
+                  }}
+                >
+                  <div className="field">
+                    <label>City</label>
+                    <Dropdown
+                      style={{
+                        fontFamily: "Arial",
+                        marginTop: "1em",
+                        fontWeight: "lighter",
+                      }}
+                      button
+                      placeholder="choose city"
+                      fluid
+                      search
+                      selection
+                      id="cityId"
+                      options={getCities}
+                      onChange={(event, data) =>
+                        formik.setFieldValue("cityId", data.value)
+                      }
+                      value={formik.values.cityId}
+                    />
+                    {formik.errors.cityId && formik.touched.cityId && (
+                      <Label basic color="red" pointing>
+                        {formik.errors.cityId}
+                      </Label>
+                    )}
+                  </div>
+                  <div className="field">
+                    <label>Job Position</label>
+                    <Dropdown
+                      className="job--advert--lbl--inpt"
+                      button
+                      placeholder="Project Manager"
+                      fluid
+                      search
+                      selection
+                      id="positionId"
+                      options={getJobPositions}
+                      onChange={(event, data) =>
+                        formik.setFieldValue("positionId", data.value)
+                      }
+                      value={formik.values.positionId}
+                    />
+                    {formik.errors.positionId && formik.touched.positionId && (
+                      <Label basic color="red" pointing>
+                        {formik.errors.positionId}
+                      </Label>
+                    )}
+                  </div>
+                  <div className="field">
+                    <label>Work Type</label>
+                    <Dropdown
+                      className="job--advert--lbl--inpt"
+                      button
+                      placeholder="Remote.."
+                      fluid
+                      search
+                      selection
+                      id="workTypeId"
+                      options={getWorkTypes}
+                      onChange={(event, data) =>
+                        formik.setFieldValue("workTypeId", data.value)
+                      }
+                      value={formik.values.workTypeId}
+                      required
+                    />
+                    {formik.errors.workTypeId && formik.touched.workTypeId && (
+                      <Label basic color="red" pointing>
+                        {formik.errors.workTypeId}
+                      </Label>
+                    )}
+                  </div>
+                  <div className="field">
+                    <label>Job Type</label>
+                    <Dropdown
+                      className="job--advert--lbl--inpt"
+                      button
+                      placeholder="Full Time"
+                      fluid
+                      search
+                      selection
+                      id="jobTypeId"
+                      options={getJobTypes}
+                      onChange={(event, data) =>
+                        formik.setFieldValue("jobTypeId", data.value)
+                      }
+                      value={formik.values.jobTypeId}
+                    />
+                    {formik.errors.jobTypeId && formik.touched.jobTypeId && (
+                      <Label basic color="red" pointing>
+                        {formik.errors.jobTypeId}
+                      </Label>
+                    )}
+                  </div>
+                  <div className="field">
+                    <label>Minimum Salary</label>
+                    <Input
+                      id="minSalary"
+                      placeholder="$ Minimum"
+                      fluid
+                      className="job--advert--lbl--inpt"
+                      onChange={formik.handleChange}
+                      value={formik.values.minSalary}
+                    ></Input>
+                    {formik.errors.minSalary && formik.touched.minSalary && (
+                      <Label basic color="red" pointing>
+                        {formik.errors.minSalary}
+                      </Label>
+                    )}
+                  </div>
+                  <div className="field">
+                    <label>Maximum Salary</label>
+                    <Input
+                      id="maxSalary"
+                      placeholder="$ Maximum"
+                      fluid
+                      className="job--advert--lbl--inpt"
+                      onChange={formik.handleChange}
+                      value={formik.values.maxSalary}
+                    ></Input>
+                    {formik.errors.maxSalary && formik.touched.maxSalary && (
+                      <Label basic color="red" pointing>
+                        {formik.errors.maxSalary}
+                      </Label>
+                    )}
+                  </div>
+                  <div className="field">
+                    <label>Open Position</label>
+                    <Input
+                      id="openPosition"
+                      placeholder="1"
+                      fluid
+                      className="job--advert--lbl--inpt"
+                      onChange={formik.handleChange}
+                      value={formik.values.openPosition}
+                    ></Input>
+                    {formik.errors.openPosition && formik.touched.openPosition && (
+                      <Label basic color="red" pointing>
+                        {formik.errors.openPosition}
+                      </Label>
+                    )}
+                  </div>
+                  <div className="field">
+                    <label>Application Deadline</label>
+                    <Input
+                      type="date"
+                      id="applicationDeadline"
+                      placeholder="dd.mm.yy"
+                      fluid
+                      className="job--advert--lbl--inpt"
+                      onChange={formik.handleChange}
+                      value={formik.values.applicationDeadline}
+                    ></Input>
+                    {formik.errors.applicationDeadline &&
+                      formik.touched.applicationDeadline && (
+                        <Label basic color="red" pointing>
+                          {formik.errors.applicationDeadline}
+                        </Label>
+                      )}
+                  </div>
+                  <div className="field">
+                    <label>Job Description</label>
+                    <TextArea
+                      id="jobDescription"
+                      placeholder="describe.."
+                      rows={8}
+                      onChange={formik.handleChange}
+                      value={formik.values.jobDescription}
+                    ></TextArea>
+                    {formik.errors.jobDescription &&
+                      formik.touched.jobDescription && (
+                        <Label basic color="red" pointing>
+                          {formik.errors.jobDescription}
+                        </Label>
+                      )}
+                  </div>
                 </div>
-              )}
-          </Form.Group>
-
-          <Form.Field className="form-field-min-max">
-            <textarea
-            
-              placeholder="Job Description"
-              style={{ height: 150, width: 500 }}
-              value={formik.values.description}
-              name="description"
-              onChange={formik.handleChange}
-            />
-            {formik.errors.description && formik.touched.description && (
-              <div style={{ color: "red" }}>{formik.errors.description}</div>
-            )}
-          </Form.Field>
-          <div>
-            <Button content="Add" primary type="submit" />
+                <div className="field" style={{ textAlign: "center" }}>
+                  <Button type="submit" className="ui yellow large button">
+                    Add
+                  </Button>
+                </div>
+              </Form>
+            </div>
           </div>
-        </form>
-      </Segment>
-    </div>
+        </div>
+      </div>
+    </>
   );
 }
