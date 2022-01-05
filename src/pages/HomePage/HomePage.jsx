@@ -2,20 +2,25 @@ import React, { useEffect, useState } from "react";
 import logo from "../../assets/ps-jpg.png";
 import jobSearch from "../../assets/img-homee.png";
 import JobAdvertisementService from "../../services/jobAdvertisementService";
+import EmployerService from "../../services/employerService";
 
 import { Icon } from "semantic-ui-react";
 import Footer from "../../layouts/Footer/Footer";
 
 export default function HomePage() {
   const [jobAdvertisements, setJobAdvertisements] = useState([]);
+  const [employers, setEmployers] = useState([]);
   let jobAdvertisementService = new JobAdvertisementService();
+  let employerService = new EmployerService();
 
   useEffect(() => {
     jobAdvertisementService
       .getAllJobAdvertisements()
       .then((result) => setJobAdvertisements(result.data.data));
+    employerService
+      .getAllEmployers()
+      .then((result) => setEmployers(result.data.data));
   }, []);
-
 
   return (
     <div>
@@ -131,54 +136,27 @@ export default function HomePage() {
             <br />
           </div>
           <div className="ui cards">
-            <div className="ui card employer--card">
-              <div className="image" style={{ padding: "2em 0" }}>
-                <div className="ui small circular image img-opacity">
-                  <img src="https://react.semantic-ui.com/images/avatar/large/matthew.png" />
+            {employers.slice(0, 3).map((employer) => {
+              const {companyName,address}=employer
+              return (
+                <div className="ui card employer--card">
+                  <div className="image" style={{ padding: "2em 0" }}>
+                    <div className="ui small circular image img-opacity">
+                      <img src="https://react.semantic-ui.com/images/avatar/large/matthew.png" />
+                    </div>
+                  </div>
+                  <div className="content">
+                    <div className="header" style={{textTransform:'capitalize'}}>{companyName}</div>
+                    <div className="meta">
+                      <span className="date">{address}</span>
+                    </div>
+                    <div className="description">
+                      <button className="ui yellow button">Detay</button>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className="content">
-                <div className="header">Matthew</div>
-                <div className="meta">
-                  <span className="date">Joined in 2015</span>
-                </div>
-                <div className="description">
-                  <button className="ui yellow button">Detay</button>
-                </div>
-              </div>
-            </div>
-            <div class="ui card employer--card">
-              <div class="image" style={{ padding: "2em 0" }}>
-                <div className="ui small circular image img-opacity">
-                  <img src="https://react.semantic-ui.com/images/avatar/large/matthew.png" />
-                </div>
-              </div>
-              <div className="content">
-                <div className="header">Matthew</div>
-                <div className="meta">
-                  <span className="date">Joined in 2015</span>
-                </div>
-                <div className="description">
-                  <button className="ui yellow button">Detay</button>
-                </div>
-              </div>
-            </div>
-            <div className="ui card employer--card">
-              <div className="image" style={{ padding: "2em 0" }}>
-                <div className="ui small circular image img-opacity">
-                  <img src="https://react.semantic-ui.com/images/avatar/large/matthew.png" />
-                </div>
-              </div>
-              <div className="content">
-                <div className="header">Matthew</div>
-                <div className="meta">
-                  <span className="date">Joined in 2015</span>
-                </div>
-                <div className="description">
-                  <button className="ui yellow button">Detay</button>
-                </div>
-              </div>
-            </div>
+              );
+            })}
           </div>
         </div>
       </div>
@@ -196,83 +174,89 @@ export default function HomePage() {
                 </div>
               </div>
             </div>
-           
-            <div className="ui cards" style={{ paddingTop: "3em" }}>
-            {jobAdvertisements.slice(0, 5).map((job) => {
-              console.log(job)
-              const {jobTitle,cityName,address,companyName, jobType, workType, department}=job;
-              return(
 
-              <div className="ui fluid card" style={{ padding: "1em 2em" }}>
-              <div className="content">
-                {/* <img
+            <div className="ui cards" style={{ paddingTop: "3em" }}>
+              {jobAdvertisements.slice(0, 5).map((job) => {
+                console.log(job);
+                const {
+                  jobTitle,
+                  cityName,
+                  address,
+                  companyName,
+                  jobType,
+                  workType,
+                  department,
+                } = job;
+                return (
+                  <div className="ui fluid card" style={{ padding: "1em 2em" }}>
+                    <div className="content">
+                      {/* <img
                   src="https://react.semantic-ui.com/images/avatar/large/jenny.jpg"
                   class="ui mini right floated image"
                 /> */}
-                <img
-                  src="https://react.semantic-ui.com/images/avatar/large/jenny.jpg"
-                  className="ui tiny left floated circular  middle aligned image"
-                />
-                <div className="right floated">
-                  <button className="ui yellow button">Apply</button>
-                </div>
-                <div
-                  className="right floated  ui four column grid job--card__home"
-                  style={{ marginRight: "2em" }}
-                >
-                  <div className="column" style={{padding:"1em .8em"}}>
-                    <h4>Work Type</h4>
-                    <span>{workType}</span>
-                  </div>
-                  <div className="column">
-                    <h4>Duration</h4>
-                    <span>{jobType}</span>
-                  </div>
-                  <div className="column">
-                    <h4>Location</h4>
-                    <span>{cityName}</span>
-                  </div>
-                  <div className="column" style={{ paddingLeft: "2em" }}>
-                    <a
-                      className="job-list-favourite order-2 icon-heart "
-                      href="#"
-                    >
-                      <Icon name="heart outline"></Icon>
-                    </a>
-                    <div className="row" style={{ paddingTop: "1em" }}>
-                      <span className="job-list-time order-1">
-                        <Icon name="clock outline"></Icon>3H ago
-                      </span>
+                      <img
+                        src="https://react.semantic-ui.com/images/avatar/large/jenny.jpg"
+                        className="ui tiny left floated circular  middle aligned image"
+                      />
+                      <div className="right floated">
+                        <button className="ui yellow button">Apply</button>
+                      </div>
+                      <div
+                        className="right floated  ui four column grid job--card__home"
+                        style={{ marginRight: "2em" }}
+                      >
+                        <div className="column" style={{ padding: "1em .8em" }}>
+                          <h4>Work Type</h4>
+                          <span>{workType}</span>
+                        </div>
+                        <div className="column">
+                          <h4>Duration</h4>
+                          <span>{jobType}</span>
+                        </div>
+                        <div className="column">
+                          <h4>Location</h4>
+                          <span>{cityName}</span>
+                        </div>
+                        <div className="column" style={{ paddingLeft: "2em" }}>
+                          <a
+                            className="job-list-favourite order-2 icon-heart "
+                            href="#"
+                          >
+                            <Icon name="heart outline"></Icon>
+                          </a>
+                          <div className="row" style={{ paddingTop: "1em" }}>
+                            <span className="job-list-time order-1">
+                              <Icon name="clock outline"></Icon>3H ago
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="header">
+                        <h2>Jenny Lawrence</h2>
+                      </div>
+                      <div className="meta">
+                        <ul className="list-unstyled">
+                          <li>
+                            <span style={{ marginRight: 3 }}>via</span>
+                            <a href="employer-detail.html">{companyName}</a>
+                          </li>
+                          <li>
+                            <Icon name="map marker alternate"></Icon>
+                            {/* <i aria-hidden="true" className="orange map marker alternate"></i>  Parsippany, NJ 07054*/}
+                            {address}
+                          </li>
+                        </ul>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="header">
-                  <h2>Jenny Lawrence</h2>
-                </div>
-                <div className="meta">
-                  <ul className="list-unstyled">
-                    <li>
-                      <span style={{ marginRight: 3 }}>via</span>
-                      <a href="employer-detail.html">{companyName}</a>
-                    </li>
-                    <li>
-                      <Icon name="map marker alternate"></Icon>
-                      {/* <i aria-hidden="true" className="orange map marker alternate"></i>  Parsippany, NJ 07054*/}
-                      {address}
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-              )
-            })}
-              
+                );
+              })}
             </div>
           </div>
         </div>
       </div>
       {/* ----------------------------Footer----------------------------------- */}
-      <Footer/>
+      <Footer />
     </div>
   );
 }
