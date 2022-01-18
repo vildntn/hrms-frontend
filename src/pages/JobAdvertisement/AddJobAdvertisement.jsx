@@ -86,7 +86,7 @@ export default function JobAdvertisementAdd() {
     onSubmit: (values) => {
       console.log(values);
       let jobAdvertisement = {
-        //sol taraftakiler swagger'da jobAdvertisement eklerken gelen değişkenler, sağ taraftakiler ise initialValues kısmında belirlediklerimiz
+        
         applicationDeadline: values.applicationDeadline,
         city: { id: values.cityId },
         employer: { id: values.employerId },
@@ -101,7 +101,7 @@ export default function JobAdvertisementAdd() {
       console.log(jobAdvertisement);
       jobAdvertisementService.addJobAdvert(jobAdvertisement).then((result) =>
         result.data.success
-          ? toast.success(`İş İlanı Eklendi.`) && formik.resetForm() //formu sıfırlamak için
+          ? toast.success(`İş İlanı Eklendi.`) && formik.resetForm() 
           : toast.error("İş İlanı Eklenemedi!")
       );
     },
